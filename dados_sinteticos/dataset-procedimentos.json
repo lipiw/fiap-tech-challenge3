@@ -1,0 +1,8 @@
+  {
+    "tipo": "Procedimento - Punção Venosa",
+    "modelo": "Procedimento: Punção venosa para coleta de amostras. Paciente identificado. Material estéril. Antissepsia. Coleta conforme tubos e ordem de enchimento. Identificação das amostras. Sem intercorrências. Assinatura do executante e data/hora."
+  },
+  {
+    "tipo": "Procedimento - Curativo",
+    "modelo": "Procedimento: Curativo [tipo]. Local: [sítio]. Limpeza com [solução]. Aplicação de [cobertura]. Orientação ao paciente. Registro de data, horário e profissional. Assinatura."
+  },

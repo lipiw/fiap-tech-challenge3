@@ -1,0 +1,12 @@
+  {
+    "tipo": "Receita Médica Simples",
+    "modelo": "Receita médica. Paciente: [nome]. Data: [data]. Medicamento: [nome], [concentração]. Posologia: [dose, via, frequência, duração]. Uso: [contínuo/por X dias]. Não substituir sem orientação médica. Assinatura e identificação do médico (nome, CRM). Carimbo."
+  },  
+  {
+    "tipo": "Receita de Controle Especial",
+    "modelo": "Receita de controle especial (cor azul). Paciente: [nome], [identificação]. Medicamento: [nome], [concentração]. Posologia: [dose, via, frequência]. Quantidade: [número por extenso]. Duas vias. Validade 30 dias. Assinatura, CRM e carimbo do médico."
+  },  
+  {
+    "tipo": "Receita Médica - TARV",
+    "modelo": "Receita para Medicamentos Excepcionais. Paciente: [nome]. Medicamento: Dolutegravir 50mg + Tenofovir/Lamivudina 300/300mg. Posologia: Tomar 1 comprimido de cada VO uma vez ao dia. Uso contínuo. Necessário formulário LME."
+  }  

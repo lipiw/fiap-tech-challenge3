@@ -1,0 +1,50 @@
+[
+  {
+    "protocolo": "Protocolo de Sepse",
+    "instituicao": "Hospital Geral",
+    "descricao": "Identificação precoce (triagem), coleta de culturas antes de antibiótico, antibioticoterapia empírica em até 1h, reposição volêmica com cristaloides, uso de vasopressor se hipotensão persistente (noradrenalina), monitorização de lactato e débito urinário.",
+    "indicacoes": "Paciente com suspeita de infecção e 2 ou mais critérios de SOFA ou lactato >2 mmol/L."
+  },
+  {
+    "protocolo": "Protocolo de IAM",
+    "instituicao": "Hospital Cardiológico",
+    "descricao": "Acesso venoso, ECG em até 10 min, ASA 300mg, clopidogrel ou ticagrelor, anticoagulante, avaliação para reperfusão (primária ou fibrinolítico conforme tempo e contraindicações), analgesia e nitrato com cautela.",
+    "indicacoes": "Dor torácica sugestiva de SCA com supradesnivelamento de ST ou bloqueio de ramo novo."
+  },
+  {
+    "protocolo": "Protocolo de AVC Isquêmico",
+    "instituicao": "Hospital Neurológico",
+    "descricao": "Triagem rápida (NIHSS), TC crânio sem contraste, glicemia e pressão arterial controladas, avaliação para trombólise (rtPA em janela até 4,5h se critérios), avaliação para trombectomia mecânica em janela estendida quando aplicável.",
+    "indicacoes": "Paciente com déficit neurológico súbito compatível com AVC isquêmico."
+  },
+  {
+    "protocolo": "Protocolo de Parada Cardiorrespiratória",
+    "instituicao": "Todos os setores",
+    "descricao": "Reconhecimento imediato, acionamento do código, RCP de alta qualidade (compressões 100-120/min, profundidade 5-6 cm), desfibrilação precoce se ritmo chocável, adrenalina a cada 3-5 min, tratamento de causas reversíveis (4H e 4T).",
+    "indicacoes": "Ausência de pulso e respiração efetiva."
+  },
+  {
+    "protocolo": "Protocolo de Crises Hipertensivas",
+    "instituicao": "Pronto-socorro e enfermarias",
+    "descricao": "Diferenciar emergência (lesão de órgão-alvo) de urgência. Em emergência: redução gradual da PAD em 10-25% nas primeiras horas; antihipertensivos parenterais conforme quadro (nitroprussiato, hidralazina, labetalol). Em urgência: antihipertensivos orais e reavaliação.",
+    "indicacoes": "PA muito elevada com ou sem sintomas/lesão de órgão-alvo."
+  },
+  {
+    "protocolo": "Protocolo de Insuficiência Renal Aguda",
+    "instituicao": "Hospital Geral",
+    "descricao": "Avaliação de causa pré-renal, renal e pós-renal; correção de hipovolemia; evitar nefrotóxicos; ajuste de doses de medicamentos; indicação de diálise conforme critérios clínicos e laboratoriais (K+, acidose, overload, uremia).",
+    "indicacoes": "Elevação de creatinina ou queda de diurese em relação à baseline."
+  },
+  {
+    "protocolo": "Protocolo de Diagnóstico e Manejo Inicial de HIV",
+    "instituicao": "Ministério da Saúde / Protocolo Nacional",
+    "descricao": "Realização de testes rápidos. Se reagente, iniciar TARV imediatamente (esquema preferencial: TDF/3TC + DTG) e solicitar exames de base (CD4, CV, Genotipagem).",
+    "indicacoes": "Pacientes com diagnóstico recente de infecção pelo HIV."
+  },
+  {
+    "protocolo": "Protocolo Cirúrgico de Lesão Meniscal em Alça de Balde",
+    "instituicao": "Hospital Ortopédico Especializado",
+    "descricao": "Avaliação clínica ortopédica e exames de imagem (RM de joelho) para confirmação de lesão meniscal tipo alça de balde, preparo pré-operatório, realização de artroscopia de joelho para redução e sutura/reparo meniscal ou meniscectomia parcial quando indicado, controle de dor, profilaxia tromboembólica e início precoce de fisioterapia pós-operatória.",
+    "indicacoes": "Paciente com lesão meniscal tipo alça de balde, apresentando dor, bloqueio articular, limitação funcional ou instabilidade do joelho com indicação cirúrgica."
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "pergunta": "O que é diabetes tipo 2 e como é tratado?",
+    "resposta": "Diabetes tipo 2 é uma condição em que o organismo não usa bem a insulina ou não a produz em quantidade suficiente. O tratamento inclui mudança de estilo de vida (alimentação e exercício), medicamentos orais ou injetáveis prescritos pelo médico. O acompanhamento médico é essencial para ajuste de doses e prevenção de complicações."
+  },
+  {
+    "pergunta": "Quando devo me preocupar com pressão alta?",
+    "resposta": "Valores persistentemente acima de 140x90 mmHg devem ser avaliados por um médico. Em caso de sintomas como dor de cabeça forte, visão turva ou dor no peito com pressão muito alta, procure atendimento de urgência. O tratamento e acompanhamento devem ser definidos pelo seu médico."
+  },
+  {
+    "pergunta": "O que significa anemia no hemograma?",
+    "resposta": "Anemia é a redução da hemoglobina ou dos glóbulos vermelhos no sangue. Pode ter várias causas (falta de ferro, vitamina B12, doenças crônicas). O médico deve interpretar o exame no contexto clínico e indicar a investigação e o tratamento adequados."
+  },
+  {
+    "pergunta": "Como funciona o tratamento da hipertireoidismo?",
+    "resposta": "O hipertireoidismo pode ser tratado com medicamentos antitireoidianos, iodo radioativo ou cirurgia, conforme orientação do endocrinologista. O acompanhamento com exames de TSH e T4 é necessário para ajuste do tratamento. Nunca altere a medicação sem orientação médica."
+  },
+  {
+    "pergunta": "O que é insuficiência renal crônica?",
+    "resposta": "É a perda progressiva e geralmente irreversível da função dos rins. O tratamento visa retardar a progressão (controle de pressão, glicemia, dieta), tratar complicações e, em estágios avançados, pode ser indicada diálise ou transplante. O nefrologista define o plano de cuidado."
+  },
+  {
+    "pergunta": "Quais são os sintomas de infarto?",
+    "resposta": "Dor ou desconforto no peito (pressão, aperto), que pode irradiar para braço esquerdo, pescoço ou mandíbula; falta de ar; suor frio; náuseas. Na presença desses sintomas, procure imediatamente atendimento de emergência. O diagnóstico e tratamento são feitos no hospital."
+  },
+  {
+    "pergunta": "Posso parar o antibiótico quando melhorar?",
+    "resposta": "Não. O antibiótico deve ser tomado pelo tempo e na dose prescritos pelo médico, mesmo que os sintomas melhorem. Interromper antes pode favorecer resistência bacteriana e recaída. Em caso de efeitos adversos, consulte o médico antes de interromper."
+  },
+  {
+    "pergunta": "O que é PCR elevado no exame de sangue?",
+    "resposta": "PCR (Proteína C Reativa) é um marcador de inflamação. Valores elevados podem indicar infecção, processo inflamatório ou outras condições. O médico correlaciona com o quadro clínico e outros exames para definir a causa e o tratamento."
+  },
+  {
+    "pergunta": "O que significa ser HIV indetectável?",
+    "resposta": "Significa que a carga viral é tão baixa que não é detectada em exames. Pessoas indetectáveis há pelo menos 6 meses não transmitem o vírus por via sexual (I=I)."
+  },
+  {
+    "pergunta": "Qual a diferença entre HIV e AIDS?",
+    "resposta": "HIV é o vírus da imunodeficiência humana. AIDS é o estágio avançado da infecção, quando o sistema imunológico está muito comprometido e surgem doenças oportunistas."
+  }
+]

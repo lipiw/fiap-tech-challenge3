@@ -1,0 +1,387 @@
+
+---
+
+# DEFINIÇÃO DO PROJETO
+
+* 
+**Célula miezCEEGpYHT (Célula de Texto):** Um título principal para a definição do projeto.
+
+
+* 
+**Célula 3lalpGISpX2m (Célula de Texto):** Uma célula de texto vazia.
+
+
+* 
+**Célula IP4h1x2rL4rP (Célula de Código):** Contém comentários que descrevem os objetivos do projeto: um assistente médico que utiliza um modelo Llama ajustado (*fine-tuned*) com dados sintéticos, um pipeline de processamento de dados com LangChain, RAG para consultas de documentos, LangGraph para orquestração e geração de logs.
+
+
+
+---
+
+# SETUP DE AMBIENTE E INSTALAÇÃO DE BIBLIOTECAS
+
+* 
+**Célula xwsxY-109OEo (Célula de Texto):** Um título principal para a configuração do ambiente e instalação de bibliotecas.
+
+
+* 
+**Célula L8LRf_rmpo5- (Célula de Texto):** Um subtítulo para importação e instalação de bibliotecas.
+
+
+* 
+**Célula U5lc4bCvRZcE (Célula de Código):** Instala as bibliotecas principais para PLN (Processamento de Linguagem Natural) e *deep learning*: `transformers`, `datasets`, `peft`, `accelerate`, `bitsandbytes`, `sentence-transformers`, `faiss-cpu`, `pandas` e `torch`.
+
+
+* 
+**Célula 9C71bxulkit3 (Célula de Código):** Instala e importa bibliotecas relacionadas ao `langgraph` e `langchain`, incluindo `langchain-text-splitters`, `langchain-community`, `faiss-cpu` e `langchain-huggingface`. Também exibe as versões do LangChain e LangGraph.
+
+
+
+### Montagem do Google Drive
+
+* 
+**Célula PX_AiyXtpOG6 (Célula de Texto):** Um subtítulo para a montagem do Google Drive.
+
+
+* 
+**Célula aqPaxJJ7PkxW (Célula de Código):** Monta o Google Drive no ambiente do Colab para acessar os arquivos.
+
+
+* 
+**Célula 4LPR-nSZVKxj (Célula de Código):** Importa vários módulos do Python (`os`, `json`, `re`, `csv`, `datetime`, `Path`) e classes específicas das bibliotecas LangChain e Hugging Face para operações de RAG, *fine-tuning* e grafos. Define os caminhos para os modelos ajustados, dados sintéticos, logs e cria os diretórios necessários no Google Drive.
+
+
+
+---
+
+# PIPELINE DE DADOS
+
+* 
+**Célula w5WSXm-GAZzJ (Célula de Texto):** Um título principal para o pipeline de dados.
+
+
+
+## Etapa 1 – Produção e carregamento de dados sintéticos
+
+* 
+**Célula oF9u_i8NRZcF (Célula de Texto):** Explica que os arquivos de dados sintéticos pré-existentes (`dataset-*`) são carregados.
+
+
+* 
+**Célula WuVJc8yQRZcG (Célula de Código):** Esta célula contém várias funções para carregar os dados sintéticos:
+
+
+* 
+`definir_caminho_valido(base_path_fallback=None)`: Determina se deve usar o caminho do Google Drive para os dados sintéticos ou um caminho local alternativo (*fallback*).
+
+
+* 
+`listar_arquivos_dados_sinteticos(caminho_alvo)`: Lista os arquivos com o prefixo `dataset-` em um diretório específico.
+
+
+* 
+`carregar_json(path)`: Carrega um arquivo JSON.
+
+
+* 
+`carregar_todos_dados_sinteticos(lista_arquivos)`: Carrega múltiplos arquivos JSON em um dicionário e, em seguida, executa esse pipeline para carregar todos os dados sintéticos.
+
+
+
+
+
+## Etapa 2 – Pipeline de anonimização
+
+* 
+**Célula Rr70RejwRZcG (Célula de Texto):** Apresenta o pipeline de anonimização, que substitui informações de identificação (CPF, CRM, nomes) por identificadores anônimos.
+
+
+* 
+**Célula iR6YiiY2RZcG (Célula de Código):** Esta célula define e executa o pipeline de anonimização:
+
+
+* 
+`anonimizar_texto(texto)`: Substitui CPF, CRM e nomes em um determinado texto por marcadores (*placeholders*) como `[CPF_ANON]`, `[CRM_ANON]` e `[PESSOA_N]` com base em um mapeamento global.
+
+
+* 
+`extrair_nomes_para_anonimizar(dados_dict)`: Extrai nomes do dicionário de dados brutos para construir o mapeamento de anonimização.
+
+
+* 
+`construir_mapeamento_anonimizacao(dados_dict)`: Cria o dicionário `MAPEAMENTO_ANONIMIZACAO`, associando nomes reais aos marcadores anônimos.
+
+
+* 
+`anonimizar_objeto(obj)`: Aplica a anonimização de forma recursiva em strings, listas e dicionários.
+
+
+* 
+`executar_pipeline_anonimizacao(dados_brutos, salvar_em=None)`: A função principal que orquestra o processo de anonimização, constrói o mapeamento, aplica-o e, opcionalmente, salva os dados anonimizados. Em seguida, chama essa função com os `dados_brutos`.
+
+
+
+
+* 
+**Célula azWswb0ORZcI (Célula de Código):** Contém funções para preparar os dados para o *fine-tuning* após a anonimização.
+
+
+* 
+`dados_sinteticos_para_instrucoes(dados_anon)`: Converte os dados anonimizados em pares de instrução/resposta adequados para o ajuste de LLMs, extraindo campos relevantes como 'pergunta', 'resposta', 'protocolo', 'descricao', 'exame', 'interpretacao', 'tipo' e 'modelo'.
+
+
+* 
+`formatar_para_llama(instruction, response, template="default")`: Formata um par de instrução-resposta em uma string no estilo de chat do Llama.
+
+
+* `criar_dataset_finetuning(dados_anon, max_amostras=500)`: Cria um `Dataset` do Hugging Face a partir dos dados anonimizados, pronto para o treinamento. Utiliza internamente as funções `dados_sinteticos_para_instrucoes` e `formatar_para_llama`.
+
+
+
+
+
+---
+
+# CARGA DE MODELO E FINE-TUNING
+
+* 
+**Célula 2Q-NTq8k-cd4 (Célula de Texto):** Um título principal para o carregamento do modelo e ajuste fino (*fine-tuning*).
+
+
+
+## Etapa 3 – Carga do modelo base [TinyLlama/TinyLlama-1.1B-Chat-v1.0] do HuggingFace
+
+* 
+**Célula eb_05SHURZcH (Célula de Texto):** Descreve o carregamento do modelo base (TinyLlama), a preparação dos dados para o *fine-tuning* usando PEFT/LoRA e o salvamento do modelo personalizado.
+
+
+* 
+**Célula Pdshm62GRZcI (Célula de Código):** Esta célula gerencia o carregamento e o ajuste fino do modelo TinyLlama:
+
+
+* 
+`carregar_modelo_e_tokenizer(model_name=MODELO_BASE, use_4bit=True)`: Carrega um modelo pré-treinado e o tokenizador do Hugging Face, aplicando opcionalmente a quantização de 4 bits através do `BitsAndBytesConfig` e preparando o modelo para o treinamento em k-bits com `peft.prepare_model_for_kbit_training`.
+
+
+* `executar_finetuning(dados_anon, modelo_base=MODELO_BASE, output_dir=None, num_epochs=2, batch_size=2)`: Orquestra o processo de *fine-tuning*. Ela chama `criar_dataset_finetuning` para obter o conjunto de dados, carrega o modelo e o tokenizador, configura o LoRA (`LoraConfig`), tokeniza o dataset, define os argumentos de treino (`TrainingArguments`) e treina o modelo usando o `Trainer`. Por fim, salva o modelo ajustado e o tokenizador. A célula tenta executar esse ajuste se os `dados_anonimizados` estiverem disponíveis.
+
+
+
+
+
+---
+
+# PREPARAÇÃO CHATGPT - Integração com o ChatGPT para análise de resultado dos exames
+
+* 
+**Célula rcH7xOcsLtNy (Célula de Texto):** Um título principal para a integração com o ChatGPT.
+
+
+* 
+**Célula e0664c51 (Célula de Código):** Define uma função para interagir com a API do ChatGPT:
+
+
+* 
+`call_chatgpt_api(system_message: str, user_prompt_base: str, user_value: str) -> str`: Chama a API do OpenAI GPT-4 com uma mensagem de sistema e um prompt de usuário, retornando a resposta do modelo ou uma mensagem de erro. Ela busca a chave da API a partir dos *secrets* (segredos) do Colab.
+
+
+
+
+
+### Teste da função call_chatgpt_api de integração com o ChatGPT
+
+* 
+**Célula 5d9838e0 (Célula de Texto):** Um subtítulo para testar a integração com a API do ChatGPT.
+
+
+* 
+**Célula e0eeecef (Célula de Código):** Fornece um exemplo de como usar a função `call_chatgpt_api` com mensagens específicas de sistema e de usuário, exibindo a resposta do GPT-4.
+
+
+
+---
+
+# VECTOR_STORE + RAG + LANGRAPH + ASSISTENTE
+
+* 
+**Célula l42bAwp9-tKB (Célula de Texto):** Um título principal para os componentes de VectorStore, RAG, LangGraph e Assistente.
+
+
+
+## Etapa 4 e 5 – Assistente com RAG e LangGraph
+
+* 
+**Célula yhVLGPCqRZcJ (Célula de Texto):** Descreve a construção do índice vetorial (RAG), um grafo do LangGraph para roteamento de intenções (sugestões de tratamento, análise de exames, alertas de risco, perguntas gerais) e um assistente com logs e regras de segurança.
+
+
+* 
+**Célula zgBndMt8RZcJ (Célula de Código):** Contém as funções principais para o RAG e sistema de logs:
+
+
+* 
+`documentos_para_rag(dados_anon)`: Converte os dados anonimizados em uma lista de objetos `Document` para o RAG, extraindo o conteúdo e os metadados.
+
+
+* 
+`construir_vectorstore(dados_anon, persist_path=None)`: Cria uma base de vetores FAISS a partir dos documentos, utilizando o `RecursiveCharacterTextSplitter` para a divisão em blocos (*chunking*) e `HuggingFaceEmbeddings` para as incorporações (*embeddings*). Opcionalmente, persiste o banco vetorial localmente.
+
+
+* 
+`log_operacao(operacao: str, detalhe: str, arquivo: str = LOG_OPERACOES) -> None`: Registra operações gerais com detalhes de data/hora em um arquivo CSV.
+
+
+* 
+`log_consulta(...) -> None`: Registra informações detalhadas da consulta, incluindo CRM, pergunta, resposta do assistente, intenção detectada e outros campos de auditoria em um arquivo CSV.
+
+
+
+
+
+### Construção do VectorStore (FAISS)
+
+* 
+**Célula EWljPCfQeY2g (Célula de Texto):** Um subtítulo para a construção do VectorStore com FAISS.
+
+
+* 
+**Célula ece6e6c7 (Célula de Código):** Chama a função `construir_vectorstore` para criar e salvar o índice FAISS usando os `dados_anonimizados` e o `VECTORSTORE_PATH`.
+
+
+* 
+**Célula UmlXrdwT-oHa (Célula de Texto):** Representa visualmente o fluxo de execução do LangGraph: `[classificar]` -> ramifica para `analise_exames` ou `demais` -> `[finalizar]` -> FIM (`END`).
+
+
+* 
+**Célula 4395b425 (Célula de Código):** Define o estado e os nós iniciais do fluxo de trabalho do LangGraph.
+
+
+* 
+`EstadoAssistente(TypedDict)`: Define a estrutura do objeto de estado usado no LangGraph, incluindo campos como pergunta, CRM, intenção, tipo de solicitação, ramo acionado, contexto RAG, resposta, fonte, grau CTCAE máximo e metadados do RAG.
+
+
+* 
+`classificar_intencao(pergunta: str) -> tuple[str, str]`: Uma função heurística para classificar a intenção do usuário e o tipo de solicitação com base em palavras-chave na pergunta.
+
+
+* 
+`node_classificar(state: EstadoAssistente) -> EstadoAssistente`: Um nó do LangGraph que recebe o estado atual, classifica a pergunta e atualiza o estado com a intenção e o tipo de solicitação.
+
+
+* 
+`node_buscar_rag(state: EstadoAssistente) -> EstadoAssistente`: Um nó do LangGraph que realiza uma busca por similaridade na base vetorial inicializada usando a pergunta do usuário, recupera os documentos relevantes, monta o `contexto_rag` e armazena os metadados e a fonte principal no estado.
+
+
+* 
+`limpar_jsonl(input_string)`: Limpa uma string que contém múltiplas linhas JSON (JSONL), analisando e serializando novamente cada objeto JSON válido, tratando erros de linhas malformadas.
+
+
+
+
+
+### Ramo 1 — GPT‑4o + CTCAE
+
+* 
+**Célula Sp7Vjj7usmCq (Célula de Texto):** Um subtítulo para o primeiro ramo do LangGraph, que utiliza o GPT-4o e o CTCAE.
+
+
+* 
+**Célula KwBB9Q6zsV95 (Célula de Código):** Define o nó para analisar exames com o GPT-4.
+
+
+* 
+`extrair_grau_ctcae(texto: str)`: Extrai o maior grau CTCAE (G1-G5) de um determinado texto usando expressões regulares (regex).
+
+
+* 
+`node_ramo_exames_gpt_ctcae(state: EstadoAssistente) -> EstadoAssistente`: Função de nó do LangGraph para o ramo 'analise_exames'. Constrói uma mensagem de sistema para o GPT-4, chama a função `call_chatgpt_api` para analisar os resultados do exame e atualiza o estado com a resposta, o ramo acionado e o grau CTCAE máximo extraído.
+
+
+
+
+
+### Ramo 2 — RAG FAISS + TinyLlama
+
+* 
+**Célula wqW8SZxdsoQo (Célula de Texto):** Um subtítulo para o segundo ramo do LangGraph, que utiliza o RAG FAISS e o TinyLlama.
+
+
+* 
+**Célula dzYbvjkrsWbE (Célula de Código):** Define o nó para respostas gerais de RAG utilizando o TinyLlama.
+
+
+* 
+`gerar_resposta_tinyllama(pergunta: str, contexto: str) -> str`: Uma função (comentada/marcador de posição) para gerar uma resposta usando o modelo TinyLlama ajustado e um contexto RAG. Constrói um prompt e utiliza o tokenizador e o modelo para gerar o texto.
+
+
+* 
+`node_ramo_rag_faiss(state: EstadoAssistente) -> EstadoAssistente`: Função de nó do LangGraph para o ramo geral de RAG. Extrai o contexto RAG e a pergunta do estado, monta um prompt, chama a função `inferencia_llm_simulada` (que usa o modelo TinyLlama) para obter uma resposta e atualiza o estado com a resposta e o ramo acionado.
+
+
+
+
+
+---
+
+# GRAFO LANGGRAPH — RAMOS EXPLÍCITOS + TRAVA ÉTICA + INFERÊNCIA
+
+* 
+**Célula 9NM_NXI7RZcJ (Célula de Código):** Esta célula define o fluxo de trabalho completo do LangGraph, incluindo salvaguardas éticas e inferência do LLM.
+
+
+* 
+`aplicar_regras_seguranca(texto: str) -> str`: Implementa salvaguardas éticas modificando a resposta do assistente para evitar prescrições médicas, suavizar diagnósticos categóricos e reforçar a necessidade de supervisão médica.
+
+
+* 
+`inferencia_llm_simulada(prompt: str, modelo_path=None) -> str`: Realiza a inferência do LLM usando o modelo TinyLlama ajustado. Tenta carregar um adaptador PEFT do caminho indicado e o combina com o modelo base para a geração. Inclui tratamento robusto de erros e geração de logs.
+
+
+* 
+`node_finalizar(state: EstadoAssistente) -> EstadoAssistente`: Um nó terminal do LangGraph que aplica a função `aplicar_regras_seguranca` à resposta gerada antes da saída final do assistente.
+
+
+* 
+`roteamento(state: EstadoAssistente) -> str`: Uma função de roteamento condicional que decide qual ramo do grafo seguir com base na intenção detectada no estado (seja `ramo_exames_gpt_ctcae` para análise de exames ou `buscar_rag` para consultas gerais).
+
+
+* `construir_grafo_assistente(vectorstore, llm_inference_fn=None)`: Constrói e compila o fluxo de trabalho do LangGraph. Define os nós (`classificar`, `buscar_rag`, `ramo_exames_gpt_ctcae`, `ramo_rag_faiss`, `finalizar`), define o ponto de entrada, adiciona as arestas condicionais para roteamento e conecta os ramos ao nó de finalização. A célula então compila o fluxo se a base vetorial estiver disponível.
+
+
+
+
+
+### Testando o modelo fine-tuned e do Assistente
+
+* 
+**Célula oOhIxmhnODrZ (Célula de Texto):** Um subtítulo para testar o modelo ajustado e o assistente.
+
+
+* 
+**Célula n3tLX1NXRZcK (Célula de Código):** Define a função principal para interagir com o assistente.
+
+
+* 
+`executar_assistente_pergunta(pergunta: str, crm: str, grafo=None) -> str`: Executa uma consulta através do fluxo do LangGraph. Inicializa o estado do assistente, invoca o grafo, recupera a resposta final e registra as informações detalhadas da consulta utilizando o `log_consulta`.
+
+
+
+
+* 
+**Célula bNb76uk6ezbH (Célula de Código):** Configura e executa um teste para o assistente médico. Primeiro, reconstrói o VectorStore para o RAG. Define se deve usar o modelo ajustado para este teste (`usar_modelo_finetuned_test`). Cria um grafo de teste (`grafo_test`) usando a função `construir_grafo_assistente`. Por fim, simula uma pergunta de usuário (`pergunta_teste`) e um CRM, e então chama a função `executar_assistente_pergunta` para obter e exibir a resposta do assistente.
+
+
+
+---
+
+# PROGRAMA PRINCIPAL
+
+* 
+**Célula rVyctWpYjroI (Célula de Texto):** Um título principal para o programa principal interativo.
+
+
+* 
+**Célula cc2a97ec (Célula de Código):** Esta célula contém o loop interativo principal do assistente médico. Garante que os `dados_anonimizados` sejam carregados e reconstrói a base vetorial. Define se o modelo ajustado deve ser utilizado (`usar_modelo_finetuned`). Constrói o grafo (fluxo de trabalho) do assistente. Em seguida, entra em um loop infinito, solicitando ao usuário o seu CRM e as suas perguntas. Processa cada pergunta utilizando a função `executar_assistente_pergunta`, exibe a resposta e registra os detalhes da sessão. O loop é interrompido se o usuário digitar 'sair'.
+
+
+* 
+**Célula 0WYpOPBzOjat (Célula de Código):** Uma célula de código vazia.

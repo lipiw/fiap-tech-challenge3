@@ -1,0 +1,235 @@
+
+Certamente! Aqui está um resumo de cada célula e das funções definidas no notebook:
+
+# DEFINIÇÃO DO PROJETO
+
+Célula miezCEEGpYHT (Texto):
+Título principal da definição do projeto.
+
+Célula 3lalpGISpX2m (Texto):
+Célula vazia.
+
+Célula IP4h1x2rL4rP (Código):
+Comentários descrevendo os objetivos do projeto:
+- Assistente médico utilizando modelo Llama com fine-tuning
+- Uso de dados sintéticos
+- Pipeline de processamento com LangChain
+- RAG para consultas documentais
+- LangGraph para orquestração
+- Sistema de logs
+
+# SETUP DE AMBIENTE E INSTALAÇÃO DE BIBLIOTECAS
+
+Instala bibliotecas essenciais:
+- transformers
+- datasets
+- peft
+- accelerate
+- bitsandbytes
+- sentence-transformers
+- faiss-cpu
+- pandas
+- torch
+- langgraph
+- langchain
+
+Também realiza:
+- Montagem do Google Drive
+- Definição de diretórios
+- Importação de módulos Python
+- Configuração de caminhos para modelos, logs e datasets
+
+# PIPELINE DE DADOS
+
+## Etapa 1 — Carregamento de Dados Sintéticos
+
+Funções:
+- definir_caminho_valido()
+- listar_arquivos_dados_sinteticos()
+- carregar_json()
+- carregar_todos_dados_sinteticos()
+
+Responsável por localizar e carregar datasets sintéticos JSON.
+
+## Etapa 2 — Pipeline de Anonimização
+
+Funções:
+- anonimizar_texto()
+- extrair_nomes_para_anonimizar()
+- construir_mapeamento_anonimizacao()
+- anonimizar_objeto()
+- executar_pipeline_anonimizacao()
+
+Objetivo:
+Anonimizar informações sensíveis como:
+- CPF
+- CRM
+- nomes de pessoas
+
+Substituindo por identificadores anônimos.
+
+## Preparação dos Dados para Fine-Tuning
+
+Funções:
+- dados_sinteticos_para_instrucoes()
+- formatar_para_llama()
+- criar_dataset_finetuning()
+
+Converte os dados anonimizados em pares:
+- instrução
+- resposta
+
+Compatíveis com treinamento de LLMs.
+
+# CARGA DO MODELO E FINE-TUNING
+
+## Carregamento do TinyLlama
+
+Funções:
+- carregar_modelo_e_tokenizer()
+- executar_finetuning()
+
+Responsabilidades:
+- carregar modelo base
+- aplicar quantização 4-bit
+- configurar LoRA
+- tokenizar datasets
+- configurar treinamento
+- salvar modelo ajustado
+
+# INTEGRAÇÃO COM CHATGPT
+
+Função:
+- call_chatgpt_api()
+
+Responsável por:
+- chamar API GPT-4
+- enviar mensagens de sistema
+- retornar respostas do modelo
+
+Também inclui testes de integração.
+
+# VECTOR STORE + RAG + LANGGRAPH
+
+## Construção do RAG
+
+Funções:
+- documentos_para_rag()
+- construir_vectorstore()
+
+Responsável por:
+- criar embeddings
+- gerar índice FAISS
+- persistir vectorstore
+
+## Sistema de Logs
+
+Funções:
+- log_operacao()
+- log_consulta()
+
+Armazena:
+- operações do sistema
+- consultas médicas
+- auditoria
+- intenções detectadas
+- fontes utilizadas
+
+# FLUXO LANGGRAPH
+
+Fluxo:
+[classificar] -> [analise_exames ou demais] -> [finalizar]
+
+## Estado do Assistente
+
+TypedDict:
+- EstadoAssistente
+
+Armazena:
+- pergunta
+- CRM
+- intenção
+- resposta
+- contexto RAG
+- metadados
+
+## Classificação de Intenção
+
+Funções:
+- classificar_intencao()
+- node_classificar()
+
+Detecta:
+- análise de exames
+- perguntas gerais
+- alertas
+- sugestões clínicas
+
+## Busca no RAG
+
+Funções:
+- node_buscar_rag()
+- limpar_jsonl()
+
+Executa:
+- busca vetorial
+- recuperação de contexto
+- preparação da resposta
+
+# RAMO 1 — GPT‑4o + CTCAE
+
+Funções:
+- extrair_grau_ctcae()
+- node_ramo_exames_gpt_ctcae()
+
+Responsável por:
+- analisar exames
+- detectar graus CTCAE
+- utilizar GPT‑4 para interpretação
+
+# RAMO 2 — RAG + TinyLlama
+
+Funções:
+- gerar_resposta_tinyllama()
+- node_ramo_rag_faiss()
+
+Responsável por:
+- gerar respostas usando TinyLlama
+- utilizar contexto RAG
+
+# SEGURANÇA E ÉTICA
+
+Funções:
+- aplicar_regras_seguranca()
+- inferencia_llm_simulada()
+- node_finalizar()
+- roteamento()
+- construir_grafo_assistente()
+
+Implementa:
+- regras éticas
+- mitigação de diagnósticos categóricos
+- necessidade de supervisão médica
+- roteamento entre fluxos
+
+# TESTES DO ASSISTENTE
+
+Função:
+- executar_assistente_pergunta()
+
+Executa:
+- perguntas no workflow
+- geração de resposta
+- logging completo
+
+Também inclui testes simulados do assistente.
+
+# PROGRAMA PRINCIPAL
+
+Implementa:
+- loop interativo
+- entrada de CRM
+- perguntas do usuário
+- execução do assistente
+- exibição de respostas
+- encerramento com comando 'sair'

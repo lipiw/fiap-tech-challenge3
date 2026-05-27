@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escopo — Assistente Médico IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="light"]{
+  --color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;
+  --color-surface-offset:#f3f0ec;--color-surface-dynamic:#e6e4df;
+  --color-divider:#dcd9d5;--color-border:#d4d1ca;
+  --color-text:#28251d;--color-text-muted:#7a7974;--color-text-faint:#bab9b4;
+  --color-primary:#01696f;--color-primary-hover:#0c4e54;--color-primary-highlight:#cedcd8;
+  --color-success:#437a22;--color-success-highlight:#d4dfcc;
+  --color-blue:#006494;--color-blue-highlight:#c6d8e4;
+  --color-gold:#d19900;--color-gold-highlight:#e9e0c6;
+  --color-purple:#7a39bb;--color-purple-highlight:#dacfde;
+  --color-warning:#964219;--color-warning-highlight:#ddcfc6;
+  --color-error:#a12c7b;--color-error-highlight:#e0ced7;
+  --color-orange:#da7101;--color-orange-highlight:#e7d7c4;
+  --radius-sm:0.375rem;--radius-md:0.5rem;--radius-lg:0.75rem;--radius-xl:1rem;--radius-full:9999px;
+  --shadow-sm:0 1px 2px oklch(0.2 0.01 80/0.06);--shadow-md:0 4px 12px oklch(0.2 0.01 80/0.08);--shadow-lg:0 12px 32px oklch(0.2 0.01 80/0.12);
+  --text-xs:clamp(0.75rem,0.7rem + 0.25vw,0.875rem);--text-sm:clamp(0.875rem,0.8rem + 0.35vw,1rem);
+  --text-base:clamp(1rem,0.95rem + 0.25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + 0.75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
+  --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;--space-20:5rem;
+  --font-display:"Instrument Serif",Georgia,serif;--font-body:"Inter","Helvetica Neue",sans-serif;
+  --transition:180ms cubic-bezier(0.16,1,0.3,1);
+  --content-default:960px;--content-wide:1200px;
+}
+[data-theme="dark"]{
+  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
+  --color-surface-offset:#1d1c1a;--color-surface-dynamic:#2d2c2a;
+  --color-divider:#262523;--color-border:#393836;
+  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;
+  --color-primary:#4f98a3;--color-primary-hover:#227f8b;--color-primary-highlight:#313b3b;
+  --color-success:#6daa45;--color-success-highlight:#3a4435;
+  --color-blue:#5591c7;--color-blue-highlight:#3a4550;
+  --color-gold:#e8af34;--color-gold-highlight:#4d4332;
+  --color-purple:#a86fdf;--color-purple-highlight:#4e4652;
+  --color-warning:#bb653b;--color-warning-highlight:#564942;
+  --color-error:#d163a7;--color-error-highlight:#4c3d46;
+  --color-orange:#fdab43;--color-orange-highlight:#564b3e;
+  --shadow-sm:0 1px 2px oklch(0 0 0/0.2);--shadow-md:0 4px 12px oklch(0 0 0/0.3);--shadow-lg:0 12px 32px oklch(0 0 0/0.4);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme]){
+  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
+  --color-surface-offset:#1d1c1a;--color-surface-dynamic:#2d2c2a;
+  --color-divider:#262523;--color-border:#393836;
+  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;
+  --color-primary:#4f98a3;
+}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth;scroll-padding-top:var(--space-16);}
+body{min-height:100dvh;line-height:1.6;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);}
+img,svg{display:block;max-width:100%;height:auto;}
+h1,h2,h3,h4{text-wrap:balance;line-height:1.2;}
+p,li{text-wrap:pretty;max-width:72ch;}
+a,button,[role="button"]{transition:color var(--transition),background var(--transition),border-color var(--transition),box-shadow var(--transition);}
+button{cursor:pointer;background:none;border:none;}
+
+/* LAYOUT */
+.page-wrapper{max-width:var(--content-wide);margin-inline:auto;padding-inline:var(--space-6);}
+.content-default{max-width:var(--content-default);margin-inline:auto;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--color-bg) 90%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid oklch(from var(--color-text) l c h/0.08);padding:var(--space-3) var(--space-6);}
+.topbar-inner{max-width:var(--content-wide);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);}
+.logo{display:flex;align-items:center;gap:var(--space-3);text-decoration:none;color:var(--color-text);}
+.logo-mark{width:32px;height:32px;flex-shrink:0;}
+.logo-text{font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;}
+.logo-sub{font-size:var(--text-xs);color:var(--color-text-muted);font-family:var(--font-body);}
+.topbar-actions{display:flex;align-items:center;gap:var(--space-3);}
+.badge-version{font-size:var(--text-xs);padding:var(--space-1) var(--space-3);background:var(--color-primary-highlight);color:var(--color-primary);border-radius:var(--radius-full);font-weight:500;}
+.theme-toggle{width:36px;height:36px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);border:1px solid oklch(from var(--color-text) l c h/0.1);}
+.theme-toggle:hover{color:var(--color-text);background:var(--color-surface-offset);}
+
+/* HERO */
+.hero{padding:var(--space-16) var(--space-6) var(--space-12);text-align:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-primary);background:var(--color-primary-highlight);padding:var(--space-1) var(--space-4);border-radius:var(--radius-full);margin-bottom:var(--space-6);}
+.hero h1{font-family:var(--font-display);font-size:var(--text-2xl);color:var(--color-text);margin-bottom:var(--space-4);font-style:italic;}
+.hero-desc{font-size:var(--text-lg);color:var(--color-text-muted);max-width:60ch;margin-inline:auto;margin-bottom:var(--space-8);}
+.meta-row{display:flex;flex-wrap:wrap;gap:var(--space-4);justify-content:center;}
+.meta-chip{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--color-text-muted);background:var(--color-surface);border:1px solid var(--color-border);padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);}
+.meta-chip svg{width:14px;height:14px;color:var(--color-primary);}
+
+/* SECTION */
+.section{padding:var(--space-12) var(--space-6);}
+.section-label{font-size:var(--text-xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-primary);margin-bottom:var(--space-3);}
+.section-title{font-family:var(--font-display);font-size:var(--text-xl);font-style:italic;margin-bottom:var(--space-2);}
+.section-subtitle{color:var(--color-text-muted);margin-bottom:var(--space-8);max-width:60ch;}
+hr.divider{border:none;border-top:1px solid var(--color-divider);margin:0;}
+
+/* CARDS */
+.card{background:var(--color-surface);border:1px solid oklch(from var(--color-text) l c h/0.08);border-radius:var(--radius-xl);padding:var(--space-6);box-shadow:var(--shadow-sm);}
+.card-grid{display:grid;gap:var(--space-5);}
+.card-grid-2{grid-template-columns:repeat(auto-fill,minmax(min(400px,100%),1fr));}
+.card-grid-3{grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));}
+.card-icon{width:40px;height:40px;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-4);flex-shrink:0;}
+.card h3{font-size:var(--text-base);font-weight:600;margin-bottom:var(--space-2);}
+.card p{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.65;}
+.card ul{list-style:none;display:flex;flex-direction:column;gap:var(--space-2);}
+.card ul li{font-size:var(--text-sm);color:var(--color-text-muted);display:flex;align-items:flex-start;gap:var(--space-2);}
+.card ul li::before{content:"→";color:var(--color-primary);flex-shrink:0;margin-top:2px;}
+
+/* COLOR VARIANTS */
+.ic-teal{background:var(--color-primary-highlight);color:var(--color-primary);}
+.ic-green{background:var(--color-success-highlight);color:var(--color-success);}
+.ic-blue{background:var(--color-blue-highlight);color:var(--color-blue);}
+.ic-gold{background:var(--color-gold-highlight);color:var(--color-gold);}
+.ic-purple{background:var(--color-purple-highlight);color:var(--color-purple);}
+.ic-orange{background:var(--color-orange-highlight);color:var(--color-orange);}
+.ic-red{background:var(--color-error-highlight);color:var(--color-error);}
+.ic-warn{background:var(--color-warning-highlight);color:var(--color-warning);}
+
+/* FLOW DIAGRAM */
+.flow-container{overflow-x:auto;padding-block:var(--space-4);}
+.flow{display:flex;align-items:flex-start;gap:0;min-width:600px;}
+.flow-step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;}
+.flow-step:not(:last-child)::after{content:"";position:absolute;top:28px;left:50%;right:-50%;height:2px;background:linear-gradient(90deg,var(--color-primary),color-mix(in oklch,var(--color-primary) 40%,var(--color-divider)));z-index:0;}
+.flow-bubble{width:56px;height:56px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;box-shadow:var(--shadow-md);}
+.flow-label{font-size:var(--text-xs);font-weight:600;text-align:center;margin-top:var(--space-3);color:var(--color-text);max-width:90px;}
+.flow-sub{font-size:10px;color:var(--color-text-muted);text-align:center;max-width:90px;margin-top:var(--space-1);}
+
+/* ARCH DIAGRAM */
+.arch-wrapper{background:var(--color-surface);border:1px solid oklch(from var(--color-text) l c h/0.08);border-radius:var(--radius-xl);padding:var(--space-8);box-shadow:var(--shadow-sm);}
+.arch-layers{display:flex;flex-direction:column;gap:var(--space-4);}
+.arch-layer{border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);border:1px solid oklch(from var(--color-text) l c h/0.08);}
+.arch-layer-title{font-size:var(--text-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:var(--space-3);}
+.arch-layer-items{display:flex;flex-wrap:wrap;gap:var(--space-2);}
+.arch-chip{font-size:var(--text-xs);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);font-weight:500;border:1px solid oklch(from var(--color-text) l c h/0.08);}
+
+/* ROUTING TABLE */
+.route-table{width:100%;border-collapse:collapse;}
+.route-table th{font-size:var(--text-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-muted);text-align:left;padding:var(--space-3) var(--space-4);border-bottom:2px solid var(--color-divider);}
+.route-table td{font-size:var(--text-sm);padding:var(--space-4);border-bottom:1px solid var(--color-divider);vertical-align:top;}
+.route-table tr:last-child td{border-bottom:none;}
+.route-table tr:hover td{background:var(--color-surface-offset);}
+.tag{display:inline-flex;align-items:center;padding:2px var(--space-2);border-radius:var(--radius-sm);font-size:var(--text-xs);font-weight:600;}
+.tag-rag{background:var(--color-blue-highlight);color:var(--color-blue);}
+.tag-gpt{background:var(--color-purple-highlight);color:var(--color-purple);}
+.tag-alert{background:var(--color-orange-highlight);color:var(--color-orange);}
+.tag-hybrid{background:var(--color-primary-highlight);color:var(--color-primary);}
+
+/* TIMELINE / FASES */
+.timeline{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:grid;grid-template-columns:120px 32px 1fr;gap:0 var(--space-4);padding-bottom:var(--space-8);}
+.tl-item:last-child{padding-bottom:0;}
+.tl-date{font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);text-align:right;padding-top:var(--space-1);}
+.tl-line{display:flex;flex-direction:column;align-items:center;}
+.tl-dot{width:32px;height:32px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:var(--text-xs);font-weight:700;}
+.tl-track{flex:1;width:2px;background:var(--color-divider);margin-top:var(--space-2);}
+.tl-item:last-child .tl-track{display:none;}
+.tl-body h4{font-size:var(--text-base);font-weight:600;margin-bottom:var(--space-2);}
+.tl-body p{font-size:var(--text-sm);color:var(--color-text-muted);}
+.tl-tags{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-3);}
+.tl-tag{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:2px var(--space-2);border-radius:var(--radius-sm);background:var(--color-surface-dynamic);color:var(--color-text-muted);}
+
+/* CONSTRAINTS */
+.constraint-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:var(--space-4);}
+.constraint-card{background:var(--color-surface);border:1px solid oklch(from var(--color-text) l c h/0.08);border-radius:var(--radius-lg);padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-2);}
+.constraint-card .c-icon{width:32px;height:32px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;}
+.constraint-card .c-title{font-size:var(--text-sm);font-weight:600;}
+.constraint-card .c-desc{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.6;}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--color-divider);padding:var(--space-8) var(--space-6);text-align:center;}
+.footer p{font-size:var(--text-xs);color:var(--color-text-faint);}
+
+/* PRINT-FRIENDLY COLORS */
+@media print{body{background:#fff;color:#000;}}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--color-border);border-radius:var(--radius-full);}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="#">
+      <svg class="logo-mark" viewBox="0 0 32 32" fill="none" aria-label="Logo Assistente Médico">
+        <rect width="32" height="32" rx="8" fill="var(--color-primary)"/>
+        <path d="M16 8v16M10 14h12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="16" cy="16" r="7" stroke="white" stroke-width="1.5" fill="none" opacity=".4"/>
+      </svg>
+      <div>
+        <div class="logo-text">Assistente Médico IA</div>
+        <div class="logo-sub">Escopo do Projeto</div>
+      </div>
+    </a>
+    <div class="topbar-actions">
+      <span class="badge-version">v1.0 — Mai/2026</span>
+      <button class="theme-toggle" data-theme-toggle aria-label="Alternar tema">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="content-default">
+    <div class="hero-eyebrow">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14h-2v-6h2zm0-8h-2V6h2z"/></svg>
+      Documento de Escopo Técnico
+    </div>
+    <h1>Assistente Médico com IA</h1>
+    <p class="hero-desc">Sistema de suporte à decisão clínica para emergências hospitalares — combinando Fine-Tuning, RAG e orquestração de fluxos via LangGraph.</p>
+    <div class="meta-row">
+      <span class="meta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Emergência Hospitalar</span>
+      <span class="meta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Suporte à Decisão Clínica</span>
+      <span class="meta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Segurança &amp; Auditoria</span>
+      <span class="meta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Escala CTCAE</span>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- 1. VISÃO GERAL -->
+<section class="section">
+  <div class="page-wrapper">
+    <div class="section-label">01 — Visão Geral</div>
+    <h2 class="section-title">O que é o projeto</h2>
+    <p class="section-subtitle">Desenvolvimento de um Assistente Médico inteligente para auxiliar médicos no atendimento de emergência, capaz de analisar sintomas, laudos laboratoriais e sugerir condutas com base nos protocolos internos do hospital.</p>
+    <div class="card-grid card-grid-2">
+      <div class="card">
+        <div class="card-icon ic-teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Usuário Principal</h3>
+        <p>Médico de atendimento da <strong>emergência hospitalar</strong> sem especialidade definida, que atende o paciente, coleta sintomas e solicita apoio ao assistente para conduta clínica adequada.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon ic-green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <h3>Papel do Sistema</h3>
+        <p>O assistente atua como <strong>suporte à decisão clínica</strong> — não substitui o médico, mas responde dúvidas, sugere procedimentos e emite alertas com base em protocolos internos do hospital.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon ic-blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <h3>Base de Conhecimento</h3>
+        <p>Protocolos internos do hospital armazenados em banco vetorial para recuperação semântica (RAG), complementados por Fine-Tuning local com dados clínicos específicos.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon ic-gold"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <h3>Orquestração Inteligente</h3>
+        <p>Fluxos de decisão não-lineares via <strong>LangGraph</strong> roteiam automaticamente cada intenção do médico para o agente correto — RAG semântico ou análise GPT-4o com CTCAE.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- 2. OBJETIVOS -->
+<section class="section">
+  <div class="page-wrapper">
+    <div class="section-label">02 — Objetivos</div>
+    <h2 class="section-title">O que o sistema deve fazer</h2>
+    <p class="section-subtitle">Funcionalidades principais que o Assistente Médico deve entregar ao final do projeto.</p>
+    <div class="card-grid card-grid-3">
+      <div class="card">
+        <div class="card-icon ic-teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>Consulta Clínica Contextualizada</h3>
+        <p>Receber dados do paciente do médico e responder dúvidas com base em protocolos internos, mantendo contexto durante o atendimento.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon ic-purple"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+        <h3>Classificação de Intenções</h3>
+        <p>Identificar automaticamente se o médico está relatando sintomas do paciente ou submetendo um laudo laboratorial, para rotear ao fluxo correto.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon ic-green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <h3>Análise de Sintomas (RAG)</h3>
+        <p>Buscar semanticamente nos protocolos e dados do hospital para sugerir condutas clínicas baseadas nos sintomas informados pelo médico.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon ic-red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H5m4 0h4m-4 0v7m4-7v7m0-7h4a2 2 0 0 0 2-2V9m0 0H5m14 0v4m0-4H5"/></svg></div>
+        <h3>Análise de Exames CTCAE</h3>
+        <p>Processar laudos de hemograma e outros exames laboratoriais via GPT-4o, classificando alterações conforme a escala CTCAE (grau 1 a 5).</p>
+      </div>
+      <div class="card">
+        <div class="card-icon ic-orange"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <h3>Alertas à Equipe Médica</h3>
+        <p>Emitir alertas automáticos para a equipe quando exames indicarem valores críticos ou quando o quadro clínico exigir atenção imediata.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon ic-blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h3>Segurança &amp; Auditoria</h3>
+        <p>Registrar todas as interações com rastreabilidade completa — quem perguntou, o quê foi respondido, quais fontes foram usadas e quando.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- 3. FLUXO DE DECISÃO -->
+<section class="section">
+  <div class="page-wrapper">
+    <div class="section-label">03 — Fluxo de Decisão</div>
+    <h2 class="section-title">Como o LangGraph orquestra</h2>
+    <p class="section-subtitle">Ao receber uma mensagem do médico, o sistema segue um fluxo automatizado não-linear para determinar a melhor resposta.</p>
+
+    <!-- Flow steps -->
+    <div class="flow-container" style="margin-bottom:var(--space-8)">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-bubble ic-teal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div class="flow-label">Médico</div>
+          <div class="flow-sub">Informa dados do paciente</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-bubble ic-gold"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div class="flow-label">Classificação de Intenção</div>
+          <div class="flow-sub">LangGraph Router</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-bubble" style="background:var(--color-surface-dynamic);color:var(--color-text-muted);width:56px;height:56px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          </div>
+          <div class="flow-label">Roteamento</div>
+          <div class="flow-sub">Sintomas ou Exame?</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-bubble ic-blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+          <div class="flow-label">Agente Especializado</div>
+          <div class="flow-sub">RAG ou GPT-4o/CTCAE</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-bubble ic-green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="flow-label">Resposta ao Médico</div>
+          <div class="flow-sub">Conduta + Alertas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Routing Table -->
+    <div class="arch-wrapper">
+      <div class="section-label" style="margin-bottom:var(--space-4)">Tabela de Roteamento de Intenções</div>
+      <div style="overflow-x:auto;">
+        <table class="route-table">
+          <thead>
+            <tr>
+              <th>Intenção Detectada</th>
+              <th>Exemplo</th>
+              <th>Rota</th>
+              <th>Agente Acionado</th>
+              <th>Saída Esperada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Relato de Sintomas</strong></td>
+              <td style="color:var(--color-text-muted);font-style:italic;">"Paciente com náusea persistente e perda de apetite"</td>
+              <td><span class="tag tag-rag">RAG Semântico</span></td>
+              <td>Recuperação nos protocolos internos do hospital</td>
+              <td>Condutas clínicas sugeridas com base nos protocolos</td>
+            </tr>
+            <tr>
+              <td><strong>Laudo Laboratorial</strong></td>
+              <td style="color:var(--color-text-muted);font-style:italic;">Laudo de Hemograma completo</td>
+              <td><span class="tag tag-gpt">GPT-4o + CTCAE</span></td>
+              <td>Análise de exame com classificação por grau de toxicidade</td>
+              <td>Alterações classificadas em graus 1–5, alertas críticos</td>
+            </tr>
+            <tr>
+              <td><strong>Dúvida de Protocolo</strong></td>
+              <td style="color:var(--color-text-muted);font-style:italic;">"Qual a dose de X para paciente com insuficiência renal?"</td>
+              <td><span class="tag tag-hybrid">RAG + LLM</span></td>
+              <td>Busca semântica + resposta gerada contextualizada</td>
+              <td>Resposta referenciada aos protocolos do hospital</td>
+            </tr>
+            <tr>
+              <td><strong>Verificação de Exames Pendentes</strong></td>
+              <td style="color:var(--color-text-muted);font-style:italic;">"Quais exames ainda não retornaram para este paciente?"</td>
+              <td><span class="tag tag-alert">Alerta / Status</span></td>
+              <td>Verificação no sistema + notificação à equipe</td>
+              <td>Lista de pendências e alertas para a equipe médica</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- 4. ARQUITETURA -->
+<section class="section">
+  <div class="page-wrapper">
+    <div class="section-label">04 — Arquitetura Técnica</div>
+    <h2 class="section-title">Camadas do sistema</h2>
+    <p class="section-subtitle">A solução é composta por quatro camadas principais, cada uma com responsabilidades bem definidas.</p>
+    <div class="arch-wrapper">
+      <div class="arch-layers">
+
+        <div class="arch-layer" style="background:color-mix(in oklch,var(--color-primary-highlight) 40%,var(--color-surface));">
+          <div class="arch-layer-title" style="color:var(--color-primary);">🖥️ Camada de Interface — Médico</div>
+          <div class="arch-layer-items">
+            <span class="arch-chip" style="background:var(--color-primary-highlight);color:var(--color-primary);">Chat Clínico</span>
+            <span class="arch-chip" style="background:var(--color-primary-highlight);color:var(--color-primary);">Upload de Laudos</span>
+            <span class="arch-chip" style="background:var(--color-primary-highlight);color:var(--color-primary);">Histórico do Atendimento</span>
+            <span class="arch-chip" style="background:var(--color-primary-highlight);color:var(--color-primary);">Painel de Alertas</span>
+          </div>
+        </div>
+
+        <div class="arch-layer" style="background:color-mix(in oklch,var(--color-gold-highlight) 40%,var(--color-surface));">
+          <div class="arch-layer-title" style="color:var(--color-gold);">⚡ Camada de Orquestração — LangGraph</div>
+          <div class="arch-layer-items">
+            <span class="arch-chip" style="background:var(--color-gold-highlight);color:var(--color-gold);">Classificador de Intenções</span>
+            <span class="arch-chip" style="background:var(--color-gold-highlight);color:var(--color-gold);">Router de Fluxos</span>
+            <span class="arch-chip" style="background:var(--color-gold-highlight);color:var(--color-gold);">Gerenciador de Estado</span>
+            <span class="arch-chip" style="background:var(--color-gold-highlight);color:var(--color-gold);">Coordenador de Agentes</span>
+            <span class="arch-chip" style="background:var(--color-gold-highlight);color:var(--color-gold);">Fluxos Não-Lineares</span>
+          </div>
+        </div>
+
+        <div class="arch-layer" style="background:color-mix(in oklch,var(--color-blue-highlight) 40%,var(--color-surface));">
+          <div class="arch-layer-title" style="color:var(--color-blue);">🤖 Camada de Agentes — LangChain</div>
+          <div class="arch-layer-items">
+            <span class="arch-chip" style="background:var(--color-blue-highlight);color:var(--color-blue);">Agente RAG (Sintomas)</span>
+            <span class="arch-chip" style="background:var(--color-blue-highlight);color:var(--color-blue);">Agente CTCAE (Exames)</span>
+            <span class="arch-chip" style="background:var(--color-blue-highlight);color:var(--color-blue);">Agente de Alertas</span>
+            <span class="arch-chip" style="background:var(--color-blue-highlight);color:var(--color-blue);">Pipeline de Integração</span>
+            <span class="arch-chip" style="background:var(--color-blue-highlight);color:var(--color-blue);">Fine-Tuning Local</span>
+            <span class="arch-chip" style="background:var(--color-blue-highlight);color:var(--color-blue);">GPT-4o</span>
+          </div>
+        </div>
+
+        <div class="arch-layer" style="background:color-mix(in oklch,var(--color-purple-highlight) 40%,var(--color-surface));">
+          <div class="arch-layer-title" style="color:var(--color-purple);">🗄️ Camada de Dados</div>
+          <div class="arch-layer-items">
+            <span class="arch-chip" style="background:var(--color-purple-highlight);color:var(--color-purple);">Banco Vetorial (RAG)</span>
+            <span class="arch-chip" style="background:var(--color-purple-highlight);color:var(--color-purple);">Protocolos Internos</span>
+            <span class="arch-chip" style="background:var(--color-purple-highlight);color:var(--color-purple);">Embeddings Clínicos</span>
+            <span class="arch-chip" style="background:var(--color-purple-highlight);color:var(--color-purple);">Dados do Hospital</span>
+            <span class="arch-chip" style="background:var(--color-purple-highlight);color:var(--color-purple);">Modelos Fine-Tuned</span>
+          </div>
+        </div>
+
+        <div class="arch-layer" style="background:color-mix(in oklch,var(--color-warning-highlight) 40%,var(--color-surface));">
+          <div class="arch-layer-title" style="color:var(--color-warning);">🔒 Camada Transversal — Segurança &amp; Auditoria</div>
+          <div class="arch-layer-items">
+            <span class="arch-chip" style="background:var(--color-warning-highlight);color:var(--color-warning);">Autenticação</span>
+            <span class="arch-chip" style="background:var(--color-warning-highlight);color:var(--color-warning);">Logs de Auditoria</span>
+            <span class="arch-chip" style="background:var(--color-warning-highlight);color:var(--color-warning);">Rastreabilidade de Decisões</span>
+            <span class="arch-chip" style="background:var(--color-warning-highlight);color:var(--color-warning);">LGPD / Dados de Saúde</span>
+            <span class="arch-chip" style="background:var(--color-warning-highlight);color:var(--color-warning);">Controle de Acesso</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- 5. CTCAE -->
+<section class="section">
+  <div class="page-wrapper">
+    <div class="section-label">05 — Análise de Exames</div>
+    <h2 class="section-title">Escala CTCAE</h2>
+    <p class="section-subtitle">Ao receber um laudo laboratorial, o sistema aciona o GPT-4o que classifica cada alteração encontrada conforme os Critérios de Terminologia Comum para Eventos Adversos (CTCAE).</p>
+    <div class="card-grid card-grid-3" style="margin-bottom:var(--space-6);">
+      <div class="card" style="border-top:3px solid var(--color-success);">
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3);">
+          <span style="font-size:var(--text-lg);font-weight:700;font-family:var(--font-display);color:var(--color-success);">G1</span>
+          <div>
+            <div style="font-size:var(--text-sm);font-weight:600;">Leve</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Assintomático / sintomas mínimos</div>
+          </div>
+        </div>
+        <p>Alteração laboratorial sem impacto clínico significativo. Conduta: monitoramento.</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--color-gold);">
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3);">
+          <span style="font-size:var(--text-lg);font-weight:700;font-family:var(--font-display);color:var(--color-gold);">G2</span>
+          <div>
+            <div style="font-size:var(--text-sm);font-weight:600;">Moderado</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Intervenção mínima indicada</div>
+          </div>
+        </div>
+        <p>Limitação leve das atividades. Pode requerer ajuste de medicação ou repetição do exame.</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--color-orange);">
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3);">
+          <span style="font-size:var(--text-lg);font-weight:700;font-family:var(--font-display);color:var(--color-orange);">G3</span>
+          <div>
+            <div style="font-size:var(--text-sm);font-weight:600;">Grave</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Intervenção hospitalar indicada</div>
+          </div>
+        </div>
+        <p>Limitação severa. Requer hospitalização ou intervenção médica urgente. <strong>Alerta emitido.</strong></p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--color-error);">
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3);">
+          <span style="font-size:var(--text-lg);font-weight:700;font-family:var(--font-display);color:var(--color-error);">G4</span>
+          <div>
+            <div style="font-size:var(--text-sm);font-weight:600;">Risco de Vida</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Intervenção urgente necessária</div>
+          </div>
+        </div>
+        <p>Condição com risco de vida imediato. <strong>Alerta crítico emitido à equipe médica.</strong></p>
+      </div>
+      <div class="card" style="border-top:3px solid #6b1a1a;">
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3);">
+          <span style="font-size:var(--text-lg);font-weight:700;font-family:var(--font-display);color:#6b1a1a;">G5</span>
+          <div>
+            <div style="font-size:var(--text-sm);font-weight:600;">Óbito</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Relacionado ao evento adverso</div>
+          </div>
+        </div>
+        <p>Grau máximo da escala. Registro crítico em auditoria e notificação imediata.</p>
+      </div>
+      <div class="card" style="background:var(--color-surface-offset);display:flex;flex-direction:column;justify-content:center;">
+        <h3 style="margin-bottom:var(--space-3);">Exemplo: Hemograma</h3>
+        <ul>
+          <li>Neutrófilos: 900/mm³ → <strong style="color:var(--color-orange);">G3</strong></li>
+          <li>Hemoglobina: 8.5 g/dL → <strong style="color:var(--color-gold);">G2</strong></li>
+          <li>Plaquetas: 25.000 → <strong style="color:var(--color-error);">G4 — Alerta</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- 6. FASES -->
+<section class="section">
+  <div class="page-wrapper">
+    <div class="section-label">06 — Fases do Projeto</div>
+    <h2 class="section-title">Cronograma de entrega</h2>
+    <p class="section-subtitle">O projeto é dividido em quatro fases incrementais, garantindo entregas de valor a cada etapa.</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">Fase 1</div>
+        <div class="tl-line">
+          <div class="tl-dot ic-teal">1</div>
+          <div class="tl-track"></div>
+        </div>
+        <div class="tl-body">
+          <h4>Fundação — Dados e Modelos</h4>
+          <p>Coleta e organização dos protocolos internos do hospital. Criação do banco vetorial. Fine-tuning do modelo base com dados clínicos. Configuração de embeddings especializados em linguagem médica.</p>
+          <div class="tl-tags">
+            <span class="tl-tag">Coleta de Dados</span>
+            <span class="tl-tag">Fine-Tuning</span>
+            <span class="tl-tag">Banco Vetorial</span>
+            <span class="tl-tag">Embeddings</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Fase 2</div>
+        <div class="tl-line">
+          <div class="tl-dot ic-blue">2</div>
+          <div class="tl-track"></div>
+        </div>
+        <div class="tl-body">
+          <h4>Agentes — LangChain &amp; RAG</h4>
+          <p>Implementação do pipeline RAG com recuperação semântica nos protocolos. Criação do Agente de Sintomas (LangChain). Desenvolvimento do Agente de Análise de Exames com classificação CTCAE via GPT-4o.</p>
+          <div class="tl-tags">
+            <span class="tl-tag">LangChain</span>
+            <span class="tl-tag">RAG Pipeline</span>
+            <span class="tl-tag">GPT-4o</span>
+            <span class="tl-tag">CTCAE</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Fase 3</div>
+        <div class="tl-line">
+          <div class="tl-dot ic-gold">3</div>
+          <div class="tl-track"></div>
+        </div>
+        <div class="tl-body">
+          <h4>Orquestração — LangGraph</h4>
+          <p>Implementação do classificador de intenções. Criação do roteador de fluxos LangGraph. Desenvolvimento dos fluxos automatizados para diferentes cenários clínicos. Integração de todos os agentes sob orquestração unificada.</p>
+          <div class="tl-tags">
+            <span class="tl-tag">LangGraph</span>
+            <span class="tl-tag">Router de Intenções</span>
+            <span class="tl-tag">Fluxos Clínicos</span>
+            <span class="tl-tag">Integração de Agentes</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Fase 4</div>
+        <div class="tl-line">
+          <div class="tl-dot ic-warn">4</div>
+          <div class="tl-track"></div>
+        </div>
+        <div class="tl-body">
+          <h4>Segurança, Interface e Homologação</h4>
+          <p>Implementação de autenticação, logs de auditoria e rastreabilidade de decisões. Desenvolvimento da interface de chat para o médico. Testes de homologação com equipe médica em ambiente simulado de emergência.</p>
+          <div class="tl-tags">
+            <span class="tl-tag">Segurança</span>
+            <span class="tl-tag">Auditoria</span>
+            <span class="tl-tag">Interface</span>
+            <span class="tl-tag">Homologação</span>
+            <span class="tl-tag">LGPD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- 7. NÃO ESCOPO -->
+<section class="section">
+  <div class="page-wrapper">
+    <div class="section-label">07 — Premissas, Restrições &amp; Fora do Escopo</div>
+    <h2 class="section-title">Limites do projeto</h2>
+    <p class="section-subtitle">Definições que garantem clareza de responsabilidades e evitam expansão indevida de escopo.</p>
+    <div class="card-grid card-grid-2" style="margin-bottom:var(--space-8);">
+      <div class="card">
+        <div class="card-icon ic-green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h3>Premissas</h3>
+        <ul>
+          <li>Protocolos internos do hospital já existem em formato digital</li>
+          <li>O hospital fornecerá acesso aos dados clínicos anonimizados para Fine-Tuning</li>
+          <li>O médico é o responsável final por toda decisão clínica</li>
+          <li>Infraestrutura de servidores disponibilizada pelo hospital</li>
+          <li>Acesso à API do GPT-4o com contrato vigente</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon ic-orange"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <h3>Restrições</h3>
+        <ul>
+          <li>Sistema não toma decisões clínicas autônomas — apenas sugere</li>
+          <li>Todas as sugestões devem citar a fonte (protocolo) de origem</li>
+          <li>Dados de pacientes não podem sair do ambiente hospitalar (on-premises ou VPC)</li>
+          <li>Conformidade obrigatória com LGPD e normas do CFM</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-bottom:var(--space-4);">Fora do Escopo — não será entregue neste projeto</div>
+    <div class="constraint-grid">
+      <div class="constraint-card">
+        <div class="c-icon ic-red"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div class="c-title">Especialidades Médicas</div>
+        <div class="c-desc">O assistente não será configurado para especialidades específicas nesta fase. Foco exclusivo na emergência geral.</div>
+      </div>
+      <div class="constraint-card">
+        <div class="c-icon ic-red"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div class="c-title">Prescrição Automática</div>
+        <div class="c-desc">O sistema não gera prescrições médicas. Sugere condutas baseadas em protocolos, mas não emite documentos clínicos.</div>
+      </div>
+      <div class="constraint-card">
+        <div class="c-icon ic-red"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div class="c-title">Integração com HIS/Prontuário</div>
+        <div class="c-desc">Integração com sistemas de prontuário eletrônico (HIS) não está no escopo desta fase.</div>
+      </div>
+      <div class="constraint-card">
+        <div class="c-icon ic-red"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div class="c-title">Atendimento ao Paciente</div>
+        <div class="c-desc">O assistente se comunica exclusivamente com o médico. Não há interface de atendimento direto ao paciente.</div>
+      </div>
+      <div class="constraint-card">
+        <div class="c-icon ic-red"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div class="c-title">App Mobile</div>
+        <div class="c-desc">A interface web (desktop/tablet) é o canal de entrega desta fase. Aplicativo mobile é escopo futuro.</div>
+      </div>
+      <div class="constraint-card">
+        <div class="c-icon ic-red"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div class="c-title">Análise de Imagens</div>
+        <div class="c-desc">Processamento de imagens de exames (raio-X, tomografia, etc.) não faz parte desta fase do projeto.</div>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="page-wrapper">
+    <p>Assistente Médico IA — Escopo do Projeto &nbsp;·&nbsp; Versão 1.0 &nbsp;·&nbsp; Mai/2026 &nbsp;·&nbsp; Documento gerado para uso interno</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]');
+  const r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.setAttribute('aria-label','Alternar para tema '+(d==='dark'?'claro':'escuro'));
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  });
+})();
+</script>
+</body>
+</html>

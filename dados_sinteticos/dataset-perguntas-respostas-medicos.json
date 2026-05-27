@@ -1,0 +1,30 @@
+[
+  {
+    "pergunta_medico": "Paciente com creatinina 2.8 e ureia 89, qual conduta inicial?",
+    "resposta": "Sugere-se classificar como lesão renal aguda ou agudização sobre crônica. Avaliar volume, medicações nefrotóxicas e obstrução. Correção de hipovolemia se presente, ajuste de doses por função renal e encaminhamento ao nefrologista para definição de conduta e eventual necessidade de diálise. A decisão final é do médico assistente."
+  },
+  {
+    "pergunta_medico": "Troponina elevada com ECG normal, como proceder?",
+    "resposta": "Troponina elevada pode indicar SCA ou outras causas (embolia, sepse, IR). Manter paciente em monitorização, repetir troponina em 3-6h, manter antiagregação e anticoagulação conforme protocolo local e avaliar com cardiologia. A conduta definitiva deve ser do médico responsável."
+  },
+  {
+    "pergunta_medico": "Qual antibioticoterapia empírica para pneumonia comunitária grave?",
+    "resposta": "Conforme diretrizes, em PAC grave pode-se considerar beta-lactâmico de amplo espectro + macrolídeo ou fluoroquinolona respiratória, com ajuste conforme perfil local e fatores de risco. A escolha final e duração são de responsabilidade do médico assistente."
+  },
+  {
+    "pergunta_medico": "Paciente com glicemia 350 mg/dL assintomático, qual conduta?",
+    "resposta": "Avaliar hidratação, função renal e cetonas. Insulina regular em esquema de correção pode ser considerada conforme protocolo da instituição. Investigar causa (infecção, descontinuação de medicação). A prescrição e ajustes devem ser feitos pelo médico."
+  },
+  {
+    "pergunta_medico": "Como interpretar TSH suprimido com T4 livre elevado?",
+    "resposta": "Compatível com hipertireoidismo. Avaliar clínica (taquicardia, perda de peso, tremor). Antitireoidianos e betabloqueadores podem ser considerados conforme orientação do endocrinologista. Encaminhar para especialista para definição de tratamento definitivo."
+  },  
+  {
+    "pergunta_medico": "Qual o prazo máximo para início da PEP e duração do esquema?",
+    "resposta": "A Profilaxia Pós-Exposição (PEP) deve ser iniciada idealmente em até 2 horas, com prazo máximo de 72 horas. O esquema dura 28 dias."
+  },
+  {
+    "pergunta_medico": "Como proceder em caso de falha virológica na TARV?",
+    "resposta": "Deve-se avaliar a adesão do paciente e, se necessário, solicitar teste de genotipagem prévia à troca de esquema terapêutico."
+  }
+]

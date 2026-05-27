@@ -1,0 +1,112 @@
+[
+  {
+    "paciente": "Carlos Alberto Mendes",
+    "cpf": "123.456.789-00",
+    "data_nascimento": "15/03/1975",
+    "exame": "Hemograma Completo",
+    "data_exame": "2024-01-10",
+    "resultado": "Hemoglobina: 8.2 g/dL (referência 12-16), Hematócrito: 26% (referência 36-48)",
+    "interpretacao": "Anemia moderada. Valores abaixo do referencial.",
+    "gravidade": "moderada",
+    "doenca_sugerida": "Anemia ferropriva"
+  },
+  {
+    "paciente": "Maria Fernanda Santos",
+    "cpf": "987.654.321-11",
+    "data_nascimento": "22/08/1982",
+    "exame": "Glicemia em jejum",
+    "data_exame": "2024-02-05",
+    "resultado": "Glicose: 148 mg/dL (referência 70-99)",
+    "interpretacao": "Glicemia elevada. Sugestão de intolerância à glicose ou diabetes.",
+    "gravidade": "alta",
+    "doenca_sugerida": "Diabetes Mellitus tipo 2"
+  },
+  {
+    "paciente": "João Pedro Oliveira",
+    "cpf": "456.789.123-22",
+    "data_nascimento": "10/11/1968",
+    "exame": "Creatinina e ureia",
+    "data_exame": "2024-01-28",
+    "resultado": "Creatinina: 2.8 mg/dL (referência 0.7-1.3), Ureia: 89 mg/dL (referência 15-45)",
+    "interpretacao": "Insuficiência renal crônica em estágio 3.",
+    "gravidade": "grave",
+    "doenca_sugerida": "Doença renal crônica"
+  },
+  {
+    "paciente": "Ana Paula Costa",
+    "cpf": "321.654.987-33",
+    "data_nascimento": "05/07/1990",
+    "exame": "TSH e T4 livre",
+    "data_exame": "2024-02-12",
+    "resultado": "TSH: 0.08 mUI/L (referência 0.4-4.0), T4 livre: 3.2 ng/dL (referência 0.8-1.8)",
+    "interpretacao": "Hipertireoidismo. Valores compatíveis com tireotoxicose.",
+    "gravidade": "moderada",
+    "doenca_sugerida": "Hipertireoidismo"
+  },
+  {
+    "paciente": "Roberto Silva Lima",
+    "cpf": "654.321.987-44",
+    "data_nascimento": "18/12/1955",
+    "exame": "Troponina I e ECG",
+    "data_exame": "2024-03-01",
+    "resultado": "Troponina I: 1.24 ng/mL (referência <0.04), ECG: supradesnivelamento ST",
+    "interpretacao": "Síndrome coronariana aguda. Elevação de biomarcadores e alteração isquêmica.",
+    "gravidade": "grave",
+    "doenca_sugerida": "IAM com supradesnivelamento de ST"
+  },
+  {
+    "paciente": "Fernanda Rodrigues Alves",
+    "cpf": "111.222.333-55",
+    "data_nascimento": "30/04/1978",
+    "exame": "PCR e VHS",
+    "data_exame": "2024-02-20",
+    "resultado": "PCR: 45 mg/L (referência <5), VHS: 78 mm/h (referência <20)",
+    "interpretacao": "Processo inflamatório ativo. Avaliar causa infecciosa ou reumatológica.",
+    "gravidade": "moderada",
+    "doenca_sugerida": "Processo inflamatório/infeccioso"
+  },
+  {
+    "paciente": "Luiz Eduardo Pereira",
+    "cpf": "555.666.777-88",
+    "data_nascimento": "14/09/1962",
+    "exame": "Bilirrubina total e transaminases",
+    "data_exame": "2024-01-15",
+    "resultado": "Bilirrubina total: 4.2 mg/dL, TGO: 180 U/L, TGP: 220 U/L",
+    "interpretacao": "Hepatite aguda. Avaliar etiologia e necessidade de acompanhamento especializado.",
+    "gravidade": "alta",
+    "doenca_sugerida": "Hepatite aguda"
+  },
+  {
+    "paciente": "Ricardo Gomes Souza",
+    "cpf": "222.333.444-66",
+    "data_nascimento": "12/05/1988",
+    "exame": "Sorologia para HIV (ELISA)",
+    "data_exame": "2024-03-10",
+    "resultado": "Reagente para HIV-1 e HIV-2",
+    "interpretacao": "Amostra reagente. Necessário teste confirmatório (Western Blot ou PCR) conforme protocolo.",
+    "gravidade": "alta",
+    "doenca_sugerida": "Infecção pelo HIV"
+  },
+  {
+    "paciente": "Beatriz Lopes Vieira",
+    "cpf": "777.888.999-01",
+    "data_nascimento": "25/11/1995",
+    "exame": "Contagem de Linfócitos T-CD4+",
+    "data_exame": "2024-03-12",
+    "resultado": "CD4+: 180 células/mm³ (referência >500)",
+    "interpretacao": "Imunodeficiência severa. Alto risco para infecções oportunistas.",
+    "gravidade": "grave",
+    "doenca_sugerida": "AIDS / Imunossupressão avançada"
+  },
+  {
+    "paciente": "Marcos Vinícius Rocha",
+    "cpf": "888.999.000-22",
+    "data_nascimento": "08/02/1980",
+    "exame": "Carga Viral HIV-1",
+    "data_exame": "2024-03-15",
+    "resultado": "Detectável: 450.000 cópias/mL (log 5.65)",
+    "interpretacao": "Replicação viral elevada. Indica falha terapêutica ou ausência de tratamento.",
+    "gravidade": "alta",
+    "doenca_sugerida": "Infecção pelo HIV ativa"
+  }
+]

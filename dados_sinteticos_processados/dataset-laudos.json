@@ -1,0 +1,14 @@
+[
+  {
+    "tipo": "Laudo de Hemograma",
+    "modelo": "Laudo: Hemograma completo. Hemácias: X milhões/mm³. Hemoglobina: X g/dL. Hematócrito: X%. VCM: X fL. HCM: X pg. Leucócitos: X/mm³. Plaquetas: X/mm³. Fórmula: neutrófilos X%, linfócitos X%, etc. Conclusão: [interpretação]. Recomenda-se avaliação médica para conduta. Data e assinatura do responsável técnico."
+  },
+  {
+    "tipo": "Laudo de Glicemia",
+    "modelo": "Laudo: Glicemia em jejum. Resultado: X mg/dL. Valores de referência: 70-99 mg/dL (jejum). Interpretação: [normal/alterado]. Em caso de alteração, procurar médico para avaliação e conduta. Data e assinatura."
+  },
+  {
+    "tipo": "Laudo de Hemograma",
+    "modelo": "Laudo: Hemograma completo... [conteúdo original resumido]"
+  }
+]
